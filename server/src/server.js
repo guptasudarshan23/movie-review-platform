@@ -5,6 +5,8 @@ import helmet from "helmet";
 import morgan from "morgan";
 import rateLimit from "express-rate-limit";
 import connectDB from './config/db.js';
+import path from "path";
+import { fileURLToPath } from "url";
 
 import { notFound, errorHandler } from "./middlewares/error.js";
 
@@ -38,6 +40,11 @@ app.use("/api/movies", movieRoutes);
 app.use("/api/movies/:id/reviews", writeLimiter, reviewRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/users/:id/watchlist", watchlistRoutes);
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use(express.static(path.join(__dirname, "../public")));
 
 // Error Handling
 app.use(notFound);
